@@ -3,27 +3,34 @@ require "rails/generators/base"
 module Anygem
   module Generators
     class ServiceGenerator < Rails::Generators::Base
-      SERVICE_SUFFIX = "_service".freeze
+      SERVICE_SUFFIX = "service".freeze
 
       source_root File.join(__dir__, "templates")
 
+      argument :name, required: true
+      class_option :nosuffix, aliases: "-n", type: :boolean, default: false
+
       def copy_service_template
-        compose_path
         template "named_service.rb", "app/services/#{service_path}.rb"
       end
 
-      def compose_path
-        @path_parts     = args[0].split(":").reject(&:blank?)
-        @file_name      = (@path_parts.pop + SERVICE_SUFFIX)
-        @dir            = @path_parts.join("/")
+    protected
+
+      def path_parts
+        name.split(":").reject(&:blank?)
       end
 
       def service_path
-        "#{@dir}/#{@file_name.underscore}"
+        "#{directories}/#{file_name.underscore}"
       end
 
-      def service_name
-        @service_name ||= service_path.camelize
+      def directories
+        @directories ||= path_parts[0..-2].join("/")
+      end
+
+      def file_name
+        suffix = options[:nosuffix] ? "" : "_#{SERVICE_SUFFIX}"
+        path_parts.last + suffix
       end
     end
   end

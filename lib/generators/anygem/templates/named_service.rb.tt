@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class <%= service_name %> < AnyService
+class <%= service_path.camelize %> < AnyService
   def call
     puts "This is #{self.class.name} reporting."
     super
