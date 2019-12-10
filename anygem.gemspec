@@ -16,7 +16,6 @@ Gem::Specification.new do |spec|
   spec.email        = "ellmo@ellmo.net"
   spec.homepage     = "https://github.com/ellmo/anygem"
   spec.license      = "MIT"
-
   # Fetch all git-versioned files, excluding all the default test locations.
   spec.files        = `git ls-files -z`.split("\x0").reject do |f|
     f.match(%r{^(test|spec|features)/})
@@ -26,5 +25,6 @@ Gem::Specification.new do |spec|
 
   spec.required_ruby_version = ">= 2.5.0"
 
+  spec.add_dependency "railties", ">= 4.1"
   spec.add_development_dependency "rspec", "~> 3.9"
 end
